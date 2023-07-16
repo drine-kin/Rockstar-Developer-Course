@@ -1,0 +1,242 @@
+WIFI Fairway - FT73100085
+
+===============================8.7.2023=====================================
+
+Installation
+1. Linux (ubuntu) or WSL 2 (window terminal)
+2. git scm (included cywin)
+3. nvm (nvm windows node)
+4. mongodb community edition for windows (product -> community server -> mongodb 6 -> choose os), mongodb shell (command line), mongodb compact (UI)
+ for linux -> mongodb install for linux ubuntu
+
+git commands
+mkdir name - create folder
+mkdir -p img/brand - create file with parent folder name
+ls - list directory
+pwd - current directory
+cd.. - enter directory
+touch filename - modify file (create if not exist)
+rmdir -R(recursive, use to delete folder) filname - delete file or folder
+echo "RSD 2023" > README -create file with content
+cat README - read file
+ls -a - list directory including hidden files
+ls -la - list directory including hidden files and permission
+git init - initiate git
+git add filename, git add . (all) - staging (to save version history)
+git status - check status 
+git commit -m(commit message) "first commit"
+git commit -am - git add and commit (work after first add and commit)
+git log - check git commit with id, name and commited date
+nano filename - file editor Ctrl + O to write, press enter and Ctrl + X to quit
+vim filename - press i to insert, esc to command mode, :wq to write and quit, :q! to force quit
+git checkout id - go desire checkout , git checkout main (branch name) - latest checkout
+git tag v0.1.0 - tag version (git log)
+
+semver major.minor.patch-+build 
+major version(major changes) will be 0 if we don't decide to release, minor version(minor changes) will be 1 if we add some feature to major version
+2.1.0-rc+12
+
+We can change branch name for development purpose whether to use it in production or neglect.
+git branch name - to create new branch
+git branch - to check branches
+git checkout -b name - create and checkout to that branch name
+git merge name - merge branch with desire branch (eg. git checkout master and git merge dev2)
+
+** There will be merge conflict if we make changes to same file with same line, we need to choose correct one.
+
+merge - merge
+rebase - linear merge (commit history and branch will be gone)
+
+git clone app app2 - cloning repository
+git pull - taking all changes from app to app2
+
+collaborate
+git init --bare - no code, only version history
+git push - save version history to central 
+
+collaboration example
+mkdir central
+cd central
+git init --bare
+cd ..
+git clone central alice
+cd alice
+echo "Alice" > README
+git add . 
+git commit -m "first"
+git push
+cd ..
+git clone central bob
+cd bob
+echo "<html>" > index.html
+git add .
+git commit -m "bob added"
+git push
+cd ..
+cd alice
+git pull
+
+.gitignore - restrict adding file and folder to git
+
+
+
+
+===============================9.7.2023=====================================
+
+Vscode Extensions - prettier code formatter, editor config (.editorconfig to add line indentation etc to our project), prettierrc
+
+remove .git folder to remove git repository
+
+nvm use 18
+node install 20
+
+licence
+gpl - open source (if we use this, we need to give our project to open source)
+lgp - use only (if we edit, need to give our project to open source)
+mit - use, edit (if we use it, add license with author(credit))
+bsd - allow all (don't take responsibility)
+
+npm init
+npm init -y (default setting)
+
+npm i package_name - to install package
+npm i - install packages listed in package.json
+npm i package_name -D (development dependency)
+npm remove package_name - delete package
+
+local package, global package
+npm i http-server (local, in project node_modules)
+npx - run installed package
+npx http-server .
+
+npm i -g http-server (global, not need npx to run installed package (installed in operating system's path))
+
+typescript
+tsc math.ts (transpile math.ts to math.js file, using global package)
+npx tsc math.ts (with local package)
+typescript(can't run on browser) = es6 features
+
+vite - mordern javascript tooling (to build js project)
+want to use node modules in browser 
+
+
+Build
+1. module bundler (change module code to browser understandable js) (webpack, now EsLint)
+2. Linter - check best practices and syntax error
+
+Babel
+3. compile es6 code to js code (because browser can't understand)
+
+react
+jsx - can add html code to js (using babel)
+
+Optimize - minify css code for smaller size
+
+
+
+create react project using vite
+npm create vite hello -> choose react -> javascript
+npm i
+npm run dev
+
+
+
+===============================15.7.2023=====================================
+https://github.dev/ - online code editor
+
+https://ohmyz.sh/- zsh 
+
+less - open file in new window
+tree -L 2
+cp !/Desktop/Professional-Web-Developer/PWD-2023.pdf ~/Desktop/pwd2023.pdf - copy file
+cp -R - recursive (folder)
+mv pwd2023.pdf pwd-23.pdf - rename
+ln pwd2023.pdf pwd (create shortcut with location)
+ln -S pwd2023.pdf pwd (file location with reference)
+tar -czf archive.tar.gz app rsd23 (create, zip, force question)
+tar -xzf archive.tar.gz (extract, zip, force question)
+gzip pwd2023.pdf (zip)
+gunzip pwd2023.pdf.gz (unzip)
+ps aux (process)
+kill pid (kill process)
+
+File Permission
+1 - Read (4 read)
+2 - Write
+4 - Execute
+
+3 - Read and Write
+7 - Read, Write and Execute
+
+chmod 555 pwd2023.pdf (owner, group user, other)
+which node (run path - location)
+wget download-link (download with link)
+wget -c download-link (continue download)
+sudo apt intall vlc - install program
+sudo remove intall vlc - remove program (don't remove all)
+
+sudo apt autoremove (remove unused package )
+
+ssh root@eimaung.com (access server via terminal)
+password
+cd /var/www/
+
+scp pwd2023.pdf(file location) root@eimaung.com:/var/www/eimaung.com/ (upload to server file location)
+
+arrow function
+property shorthand
+array/object destructure
+template string
+array functions (map, filter)
+module (ES6, CJS)
+
+vite running port change
+server: {
+	open:true,
+	port: 3000
+}
+
+
+===============================16.7.2023=====================================
+
+mongodb - nosql
+
+vertical scale - can't divide server, (add more cpu, storage, ram)
+horizontal scale - divide server
+
+redis(nosql) - key, value (very fast, session store)
+
+mongo(nosql) - document store (database, collection, document)
+
+cassandra(nosql) - column data store (big data, data warehouse)
+
+nero4j - data with relation (social network)
+
+
+mongod
+pwd
+mkdir data
+mongod --dbpath=/home/drine-kin/data (set path for mongodb to run)
+mongosh - run mongo server run
+
+mongodb command
+show dbs - list database
+use todo - create database 
+db.help - watch function available for mongo
+
+db.task.insertOne({subject: 'Apple', done: false}) - create collection and insert (_id auto generated, ObjectId datatype, can extract auto id)
+db.tasks.find() - show all
+db.tasks.find({done: false}) - filter
+db.tasks.find().sort({subject: -1}) - sorting
+
+db.tasks.updateOne({subject: 'Orange'}, {$set: {done:true}}) - update document
+db.tasks.deleteOne({subject: 'Orange'}) - delete document
+
+exit
+
+node index.js - run index js file
+
+
+
+
+
