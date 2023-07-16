@@ -31,4 +31,4 @@ async function deleteOne(subject) {
 	console.log(result);
 }
 
-deleteOne("Kiwi");
+// deleteOne("Kiwi");

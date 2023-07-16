@@ -217,7 +217,10 @@ mongod
 pwd
 mkdir data
 mongod --dbpath=/home/drine-kin/data (set path for mongodb to run)
+OR sudo service mongod start | stop
 mongosh - run mongo server run
+
+
 
 mongodb command
 show dbs - list database
@@ -235,6 +238,22 @@ db.tasks.deleteOne({subject: 'Orange'}) - delete document
 exit
 
 node index.js - run index js file
+
+
+express, body-parser
+
+api structure
+resources/id
+GET, POST, PUT/PATCH, DELETE - request
+200 - complete, 201 - created, update, 404 - not found , 400 - invalid request, 401, 403 forbidden, 500 - server error
+
+npm i -g nodemon - server restart (global package, don't need npx to run)
+nodemon index.js
+
+curl -X GET localhost:8888/users
+curl -X GET localhost:8888/users/1
+curl -X POST localhost:8888/users -d subject=ICECREAM -v
+
 
 
 
