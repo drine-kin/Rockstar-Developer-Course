@@ -1,21 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
+import ThemeApp from "./ThemeApp.jsx";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import About from "./About.jsx";
-import User from "./User.jsx";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <App />,
-		children: [
-			{
-				path: "/user/:name",
-				element: <User />,
-			},
-		],
+		element: <ThemeApp />,
 	},
 	{
 		path: "/about",

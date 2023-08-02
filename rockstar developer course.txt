@@ -7,7 +7,7 @@ Installation
 2. git scm (included cywin)
 3. nvm (nvm windows node)
 4. mongodb community edition for windows (product -> community server -> mongodb 6 -> choose os), mongodb shell (command line), mongodb compact (UI)
- for linux -> mongodb install for linux ubuntu
+ for linux -> mongodb install for linux ubuntu, community edition
 
 git commands
 mkdir name - create folder
@@ -254,6 +254,74 @@ curl -X GET localhost:8888/users
 curl -X GET localhost:8888/users/1
 curl -X POST localhost:8888/users -d subject=ICECREAM -v
 
+
+
+
+===============================22.7.2023=====================================
+React State (waterfall)
+1. useState (waterfall from parent to child(by props), can't use child state from parent, can't edit parent)
+2. redux (state container, global state)
+3. context (can share from every child component)
+4. next.js (layout -> pages, can use state from layout from every pages
+
+npm create vite react-todo
+
+mui (similar to android)
+ant design (similar to ios)
+mantine
+
+
+===============================23.7.2023=====================================
+React todo with MUI
+
+
+===============================29.7.2023=====================================
+React hooks - useMemo(better performance), useEffect(control render times via changed value) (syntax same)
+
+
+==============================30.7.2023====================================
+
+react-router-dom
+use createBrowserRouter to define route 
+eg. const router = createBrowserRouter([
+	{
+		path: "/",
+		element: <App />,
+	},
+	{
+		path: "/about",
+		element: <About />,
+	},
+]);
+
+use RouterProvider to use defined route 
+eg. <RouterProvider router={router} />
+
+use useParams() to get user input url 
+const { name } = useParams();
+eg. Bob in http://localhost:3000/user/Bob
+
+use navigate to switch to another page instead of Link
+eg. const navigate = useNavigate();
+<a href="#/" onClick={() => navigate("/")}>Go Back</a>
+
+if we use nested route in main.jsx, we need to define <Outlet /> in App component
+
+onClick={add} re-render first, can't use
+onClick={()=>add(1)} or onClick={()=>add()} - correct usage
+
+but sometimes, if we call function and if that function return function we need to call function only (this function will work after onClick or onClose action)
+
+eg. const toggleDrawer = () => (event) => {
+	if (
+		event.type === "keydown" &&
+		(event.key === "Tab" || event.key === "Shift")
+	) {
+		return;
+	}
+	setShowDrawer(!showDrawer);
+};
+onClose={toggleDrawer()}
 
 
 

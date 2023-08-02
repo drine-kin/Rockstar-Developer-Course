@@ -1,41 +1,33 @@
-import { useRef, useState } from "react";
-import "./App.css";
-import Item from "./Item";
+import React from "react";
+import { Link, Outlet } from "react-router-dom";
 
-export default function App() {
-	const input = useRef();
-
-	const [data, setData] = useState([
-		{ id: 1, name: "Alice", status: false },
-		{ id: 2, name: "Bob", status: false },
-		{ id: 3, name: "Chris", status: false },
-	]);
-
-	const add = (name) => {
-		const id = data[data.length - 1].id + 1;
-		setData([...data, { id, name }]);
-	};
-
-	const remove = (id) => setData(data.filter((item) => item.id !== id));
-
+const App = () => {
 	return (
 		<div>
-			<h1>List ({data.length})</h1>
+			Home
 			<ul>
-				{data.map((user) => {
-					return <Item key={user.id} user={user} remove={remove} />;
-				})}
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						add(input.current.value);
-						input.current.value = "";
-						input.current.focus();
-					}}>
-					<input type="text" ref={input} />
-					<input type="submit" value="Add" />
-				</form>
+				<li>
+					<Link to="/">Home</Link>
+				</li>
+				<li>
+					<Link to="/about">About</Link>
+				</li>
+				<li>
+					User
+					<ul>
+						<li>
+							<Link to="/user/alice">Alice</Link>
+						</li>
+						<li>
+							<Link to="/user/Bob">Bob</Link>
+						</li>
+					</ul>
+				</li>
 			</ul>
+			<hr />
+			<Outlet />
 		</div>
 	);
-}
+};
+
+export default App;
