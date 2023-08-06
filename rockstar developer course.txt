@@ -280,6 +280,7 @@ React hooks - useMemo(better performance), useEffect(control render times via ch
 
 
 ==============================30.7.2023====================================
+react-todo
 
 react-router-dom
 use createBrowserRouter to define route 
@@ -324,6 +325,24 @@ eg. const toggleDrawer = () => (event) => {
 onClose={toggleDrawer()}
 
 
+==============================5.8.2023====================================
+redux-todo
+Redux, Redux Toolkit
+Redux - State Container
 
+npm init -y
+npm i redux
 
+cp -R react-todo redux-todo
 
+==============================6.8.2023====================================
+api-todo
+npm i express body-parser cors mongodb nodemon
+
+200 - Ok (Default)
+201 - Created
+400 - Bad Request (not complete request)
+401 - Unauthorized
+403 - forbidden
+404 - Not found
+500 - server error (runtime)

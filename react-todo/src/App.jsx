@@ -5,16 +5,20 @@ import Header from "./Header";
 
 import { Box, Container, List } from "@mui/material";
 import MainDrawer from "./MainDrawer";
+import { useEffect } from "react";
+
+const url = "http://localhost:8080/tasks";
 
 export default function App() {
-	const [tasks, setTasks] = useState([
-		{ _id: 1, subject: "Apple", done: true },
-		{ _id: 2, subject: "Banana", done: false },
-		{ _id: 3, subject: "Kiwi", done: true },
-		{ _id: 4, subject: "Watermelon", done: false },
-	]);
+	const [tasks, setTasks] = useState([]);
 
 	const [showDrawer, setShowDrawer] = useState(false);
+
+	useEffect(() => {
+		fetch(url)
+			.then((res) => res.json())
+			.then((data) => setTasks(data));
+	}, []);
 
 	const clear = () => {
 		setTasks(tasks.filter((task) => !task.done));
@@ -30,6 +34,9 @@ export default function App() {
 	};
 
 	const toggleTask = (_id) => {
+		fetch(`${url}/${_id}/toggle`, {
+			method: "PUT",
+		});
 		setTasks(
 			tasks.map((task) => {
 				if (task._id === _id) {
