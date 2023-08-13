@@ -14,31 +14,32 @@ const db = mongo.db("todo");
 const tasks = db.collection("tasks");
 
 app.get("/tasks", async function (req, res) {
-	const data = await tasks.find().toArray();
-	res.json(data);
+	try {
+		const data = await tasks.find().toArray();
+		res.json(data);
+	} catch (error) {
+		res.status(500).json({ msg: "Something went wrong" });
+	}
 });
 
 app.post("/tasks", async function (req, res) {
 	const { subject } = req.body;
 	if (!subject) return res.status(400).json({ msg: "subject required" });
 
+	const data = { subject, done: false };
 	const result = await tasks.insertOne({ subject, done: false });
-	const data = await db.collection("tasks").findOne({
-		_id: new ObjectId(result.insertedId),
-	});
-	res.json(data);
+
+	res.json({ _id: result.insertedId, ...data });
 });
 
 app.put("/tasks/:id/toggle", async function (req, res) {
 	const { id } = req.params;
-	const data = await tasks.findOne({ _id: new ObjectId(id) });
 
-	const result = await tasks.updateOne(
-		{ _id: new ObjectId(id) },
+	const result = await tasks.updateOne({ _id: new ObjectId(id) }, [
 		{
-			$set: { done: !data.done },
-		}
-	);
+			$set: { done: { $not: "$done" } },
+		},
+	]);
 	res.json(result);
 });
 

@@ -1,10 +1,4 @@
-import { useState } from "react";
-import Item from "./item";
-import Form from "./Form";
-import Header from "./Header";
-
-import { Avatar, Box, Container, List, Typography } from "@mui/material";
-import MainDrawer from "./MainDrawer";
+import { Avatar, Box, Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function Contact() {

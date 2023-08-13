@@ -14,37 +14,73 @@ export default function App() {
 
 	const [showDrawer, setShowDrawer] = useState(false);
 
+	const [isLoading, setIsLoading] = useState(true);
+
+	const [isError, setIsError] = useState(false);
+
+	const fetchData = async () => {
+		const res = await fetch(url);
+		if (res.ok) {
+			const data = await res.json();
+			setTasks(data);
+			setIsError(false);
+			setIsLoading(false);
+		} else {
+			setIsError(true);
+			setIsLoading(false);
+		}
+	};
+
 	useEffect(() => {
-		fetch(url)
-			.then((res) => res.json())
-			.then((data) => setTasks(data));
+		fetchData();
 	}, []);
 
-	const clear = () => {
-		setTasks(tasks.filter((task) => !task.done));
+	const addTask = async (subject) => {
+		const res = await fetch(url, {
+			method: "POST",
+			body: JSON.stringify({ subject }),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+
+		if (res.ok) {
+			const data = await res.json();
+			setTasks([...tasks, data]);
+		}
 	};
 
-	const addTask = (subject) => {
-		const _id = tasks[tasks.length - 1]._id + 1;
-		setTasks([...tasks, { _id, subject, done: false }]);
+	const deleteTask = async (_id) => {
+		const res = await fetch(`${url}/${_id}`, {
+			method: "DELETE",
+		});
+
+		if (res.ok) {
+			setTasks(tasks.filter((task) => task._id !== _id));
+		}
 	};
 
-	const deleteTask = (_id) => {
-		setTasks(tasks.filter((task) => task._id !== _id));
-	};
-
-	const toggleTask = (_id) => {
-		fetch(`${url}/${_id}/toggle`, {
+	const toggleTask = async (_id) => {
+		const res = await fetch(`${url}/${_id}/toggle`, {
 			method: "PUT",
 		});
-		setTasks(
-			tasks.map((task) => {
-				if (task._id === _id) {
-					task.done = !task.done;
-				}
-				return task;
-			})
-		);
+		if (res.ok) {
+			setTasks(
+				tasks.map((task) => {
+					if (task._id === _id) {
+						task.done = !task.done;
+					}
+					return task;
+				})
+			);
+		}
+	};
+
+	const clear = async () => {
+		const res = await fetch(url, { method: "DELETE" });
+		if (res.ok) {
+			setTasks(tasks.filter((task) => !task.done));
+		}
 	};
 
 	const toggleDrawer = () => (event) => {
@@ -66,6 +102,8 @@ export default function App() {
 			/>
 			<MainDrawer showDrawer={showDrawer} toggleDrawer={toggleDrawer} />
 			<Container>
+				{isLoading && <Box sx={{ textAlign: "center", py: 4 }}>Loading...</Box>}
+				{isError && <Box sx={{ textAlign: "center", py: 4 }}>Error</Box>}
 				<Box sx={{ mx: { lg: 20, md: 10 } }}>
 					<Form addTask={addTask} />
 					<List sx={{ mt: 4 }}>

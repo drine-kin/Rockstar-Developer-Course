@@ -346,3 +346,37 @@ npm i express body-parser cors mongodb nodemon
 403 - forbidden
 404 - Not found
 500 - server error (runtime)
+
+
+==============================12.8.2023====================================
+React Native Elements, Native Base
+
+React, NextJS (Remix- full stack(client site))
+React Native, Expo
+Redux
+MUI (Radix ui)
+Node (Deno, Bun)
+Express ( Fastify, NestJS-full stack(server site))
+Mongo(Prisma)
+
+Fetch (react-query, SWR)
+
+
+headless - no need to import
+
+Error Boundary - to show error only on component that cause error, other works fine
+
+connect api-todo and react-todo
+
+
+React Native
+
+npx create-expo-app todo-native
+cd todo-native
+npm run android or npx expo
+
+to view react native project in web view - install npx expo install react-native-web@~0.19.6 react-dom@18.2.0 @expo/webpack-config
+
+
+
+==============================13.8.2023====================================
