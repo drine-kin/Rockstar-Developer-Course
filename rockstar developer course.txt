@@ -375,8 +375,16 @@ npx create-expo-app todo-native
 cd todo-native
 npm run android or npx expo
 
-to view react native project in web view - install npx expo install react-native-web@~0.19.6 react-dom@18.2.0 @expo/webpack-config
+to view react native project in web view - install npx expo install react-native-web@~0.19.6 react-dom@18.2.0 @expo/webpack-config -- --force
 
 
 
 ==============================13.8.2023====================================
+npx expo
+
+npx expo install react-native-web@~0.19.6 react-dom@18.2.0 @expo/webpack-config --
+ --force - to allow web view
+
+
+==============================19.8.2023====================================
+

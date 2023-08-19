@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import Header from "./Header";
 
-import { Box, Container, List } from "@mui/material";
 import MainDrawer from "./MainDrawer";
 import { Outlet } from "react-router-dom";
+import { fetchTasks } from "./features/todo/todoSlice";
 
 export default function App() {
-	const tasks = useSelector((state) => state.todo.tasks);
+	const { tasks, loading } = useSelector((state) => state.todo);
+
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(fetchTasks());
+	}, []);
 
 	const [showDrawer, setShowDrawer] = useState(false);
 
@@ -28,6 +34,10 @@ export default function App() {
 				count={tasks.filter((task) => !task.done).length}
 				toggleDrawer={toggleDrawer}
 			/>
+
+			{loading && (
+				<div style={{ textAlign: "center", marginBottom: 20 }}>Loading...</div>
+			)}
 			<MainDrawer showDrawer={showDrawer} toggleDrawer={toggleDrawer} />
 
 			<Outlet />

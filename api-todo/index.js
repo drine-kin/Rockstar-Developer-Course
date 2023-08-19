@@ -16,7 +16,9 @@ const tasks = db.collection("tasks");
 app.get("/tasks", async function (req, res) {
 	try {
 		const data = await tasks.find().toArray();
-		res.json(data);
+		setTimeout(() => {
+			res.json(data);
+		}, 3000);
 	} catch (error) {
 		res.status(500).json({ msg: "Something went wrong" });
 	}
