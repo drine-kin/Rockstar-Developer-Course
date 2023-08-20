@@ -387,4 +387,11 @@ npx expo install react-native-web@~0.19.6 react-dom@18.2.0 @expo/webpack-config 
 
 
 ==============================19.8.2023====================================
+React Native Elements
+
+npm install @rneui/themed @rneui/base --force
+
+Start create x(twitter clone), seed data with faker and insert to database (x-api)
+
+npx expo start --web
 
