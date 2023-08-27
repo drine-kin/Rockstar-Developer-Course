@@ -395,3 +395,24 @@ Start create x(twitter clone), seed data with faker and insert to database (x-ap
 
 npx expo start --web
 
+==============================20.8.2023====================================
+x(twitter clone) 
+add get user posts by handle and get post by post id in api and ui
+
+==============================26.8.2023====================================
+jwt in x
+curl -X POST localhost:8888/users
+curl -X POST localhost:8888/users -d "name=Mary&handle=mary&profile=Mary&password=password"
+curl -X GET localhost:8888/login -d "handle=drine&password=password"
+
+
+next.js
+SPA - Single page applicaiton (project in server in one app, server will give whole app in first time, later is fast, compile jsx to javascript, return javascript code, browser need to run react)
+
+SSR - do routing in server side, if user request home, return home only, server return direct html, hydration process (send html element first, then send javascript event and data will send again, browser need to run html)
+
+Server Component - react component with  (standalone mui, date-fms process individually in server side)
+
+SSR + Server Component - 
+
+

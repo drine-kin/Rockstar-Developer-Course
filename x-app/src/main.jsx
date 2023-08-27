@@ -6,6 +6,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import Post from "./pages/Post";
 
 const router = createBrowserRouter([
 	{
@@ -24,6 +26,14 @@ const router = createBrowserRouter([
 				path: "/register",
 				element: <Register />,
 			},
+			{
+				path: "/profile/:handle",
+				element: <Profile />,
+			},
+			{
+				path: "/posts/:id",
+				element: <Post />,
+			},
 		],
 	},
 ]);
@@ -31,5 +41,5 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<RouterProvider router={router} />
-	</React.StrictMode>,
+	</React.StrictMode>
 );

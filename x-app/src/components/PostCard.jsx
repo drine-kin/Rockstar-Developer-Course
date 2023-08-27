@@ -8,10 +8,22 @@ import {
 	Avatar,
 } from "@mui/material";
 
-const PostCard = ({ post }) => {
+import { formatRelative, parseISO } from "date-fns";
+
+import { pink, blue } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
+
+const PostCard = ({ post, single = false, primary }) => {
+	const navigate = useNavigate();
+
 	return (
-		<Card sx={{ mb: 1 }} variant="outlined">
-			<CardActionArea>
+		<Card
+			sx={{ mb: 1, borderColor: primary && blue["500"] }}
+			variant="outlined">
+			<CardActionArea
+				onClick={() => {
+					!single && navigate(`/posts/${post._id}`);
+				}}>
 				<CardContent sx={{ display: "flex", p: 2 }}>
 					<Box sx={{ mr: 3 }}>
 						<Avatar
@@ -19,26 +31,34 @@ const PostCard = ({ post }) => {
 							sx={{
 								width: 64,
 								height: 64,
-								bgcolor: "green",
-							}}
-						/>
+								bgcolor: primary ? blue["400"] : pink["400"],
+							}}>
+							{post.user.name.charAt(0)}
+						</Avatar>
 					</Box>
 					<Box>
 						<Box sx={{ mb: 1 }}>
 							<Typography sx={{ mr: 1 }} component="span">
-								<b>{post.user && post.user[0].name}</b>
+								<b>{post.user.name}</b>
 							</Typography>
 
 							<Typography component="span" sx={{ color: "grey" }}>
-								@{post.user && post.user[0].handle}
+								@{post.user.handle}
 							</Typography>
 
-							<Typography component="span" sx={{ ml: 1, color: "green" }}>
-								<small>{post.created}</small>
+							<Typography
+								component="span"
+								sx={{ ml: 1, color: primary ? blue["400"] : pink["400"] }}>
+								<small>
+									{formatRelative(parseISO(post.created), new Date())}
+								</small>
 							</Typography>
 						</Box>
 
-						<Typography variant="subtitle1" color="text.secondary">
+						<Typography
+							variant="subtitle1"
+							color="text.secondary"
+							sx={{ fontSize: primary ? blue["400"] : pink["400"] }}>
 							{post.body}
 						</Typography>
 					</Box>

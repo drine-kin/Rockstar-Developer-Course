@@ -13,15 +13,20 @@ const url = "http://192.168.99.128:8080/tasks";
 export default function App() {
 	const [tasks, setTasks] = useState([]);
 
-	const fetchTasks = async () => {
-		const res = await fetch(url);
-		const data = await res.json();
-		console.log(data);
-		setTasks(data);
-	};
+	// const fetchTasks = async () => {
+	// 	const res = await fetch(url);
+	// 	const data = await res.json();
+	// 	console.log(data);
+	// 	setTasks(data);
+	// };
 
 	useEffect(() => {
-		fetchTasks();
+		(async () => {
+			const res = await fetch(url);
+			const data = await res.json();
+			console.log(data);
+			setTasks(data);
+		})();
 	}, []);
 
 	const [text, setText] = useState("");
