@@ -47,7 +47,7 @@ export default function Profile() {
 						}}>
 						<Avatar
 							sx={{ background: blue["500"], width: 128, height: 128, mb: -6 }}>
-							{handle.charAt(0)}
+							{handle.charAt(0).toUpperCase()}
 						</Avatar>
 					</Box>
 					{posts.map((post) => {

@@ -7,13 +7,21 @@ import {
 	InputAdornment,
 } from "@mui/material";
 
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../ThemedApp";
+
+const url = "http://localhost:8888/login";
 
 export default function Login() {
 	const handleInput = useRef();
 	const passwordInput = useRef();
 
 	const [hasError, setHasError] = useState(false);
+
+	const { setAuth, setAuthUser } = useContext(AuthContext);
+
+	const navigate = useNavigate();
 
 	return (
 		<Box>
@@ -28,22 +36,39 @@ export default function Login() {
 			)}
 
 			<form
-				onSubmit={e => {
+				onSubmit={(e) => {
 					e.preventDefault();
 
 					setHasError(false);
 
 					const handle = handleInput.current.value;
 					const password = passwordInput.current.value;
+
+					(async () => {
+						const res = await fetch(url, {
+							method: "post",
+							body: JSON.stringify({ handle, password }),
+							headers: {
+								"Content-Type": "application/json",
+							},
+						});
+						if (res.ok) {
+							const { token, user } = await res.json();
+							localStorage.setItem("token", token);
+							setAuth(true);
+							setAuthUser(user);
+							navigate("/");
+						} else {
+							setHasError(true);
+						}
+					})();
 				}}>
 				<OutlinedInput
 					required
 					inputRef={handleInput}
 					placeholder="Handle"
 					fullWidth={true}
-					startAdornment={
-						<InputAdornment position="start">@</InputAdornment>
-					}
+					startAdornment={<InputAdornment position="start">@</InputAdornment>}
 					sx={{ mb: 2 }}
 				/>
 
@@ -56,11 +81,7 @@ export default function Login() {
 					sx={{ mb: 3 }}
 				/>
 
-				<Button
-					type="submit"
-					variant="contained"
-					color="info"
-					fullWidth={true}>
+				<Button type="submit" variant="contained" color="info" fullWidth={true}>
 					Login
 				</Button>
 			</form>

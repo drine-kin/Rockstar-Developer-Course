@@ -17,12 +17,15 @@ import {
 } from "@mui/icons-material";
 
 import { useContext, useState } from "react";
-import { ThemeContext } from "../ThemedApp";
-import { Link } from "react-router-dom";
+import { AuthContext, ThemeContext } from "../ThemedApp";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Header({ toggleDrawer }) {
 	const { mode, setMode } = useContext(ThemeContext);
+	const { auth, setAuth, setAuthUser } = useContext(AuthContext);
 	const [showMenu, setShowMenu] = useState(false);
+
+	const navigate = useNavigate();
 
 	return (
 		<Box sx={{ flexGrow: 1, mb: 3 }}>
@@ -38,8 +41,7 @@ export default function Header({ toggleDrawer }) {
 							alignItems: "center",
 							justifyContent: "center",
 							flexGrow: 1,
-						}}>
-					</Box>
+						}}></Box>
 
 					{mode === "dark" ? (
 						<IconButton onClick={() => setMode("light")}>
@@ -51,22 +53,30 @@ export default function Header({ toggleDrawer }) {
 						</IconButton>
 					)}
 
-					<IconButton onClick={e => setShowMenu(e.currentTarget)}>
-						<MoreVertIcon />
-					</IconButton>
+					{auth && (
+						<>
+							<IconButton onClick={(e) => setShowMenu(e.currentTarget)}>
+								<MoreVertIcon />
+							</IconButton>
 
-					<Menu
-						anchorEl={showMenu}
-						open={Boolean(showMenu)}
-						onClose={() => setShowMenu(false)}>
-						<MenuItem
-							onClick={() => {
-								setShowMenu(false);
-							}}
-							sx={{ width: 200 }}>
-							Logout
-						</MenuItem>
-					</Menu>
+							<Menu
+								anchorEl={showMenu}
+								open={Boolean(showMenu)}
+								onClose={() => setShowMenu(false)}>
+								<MenuItem
+									onClick={() => {
+										localStorage.clear();
+										setAuth(false);
+										setAuthUser(null);
+										setShowMenu(false);
+										navigate("/login");
+									}}
+									sx={{ width: 200 }}>
+									Logout
+								</MenuItem>
+							</Menu>
+						</>
+					)}
 				</Toolbar>
 			</AppBar>
 		</Box>

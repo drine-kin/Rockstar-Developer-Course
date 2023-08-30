@@ -36,7 +36,7 @@ const auth = function (req, res, next) {
 	});
 };
 
-app.get("/login", async function (req, res) {
+app.post("/login", async function (req, res) {
 	const { handle, password } = req.body;
 
 	if (!handle || !password) {
@@ -50,7 +50,7 @@ app.get("/login", async function (req, res) {
 			const result = await bcrypt.compare(password, user.password);
 			if (result) {
 				const token = jwt.sign(user, secret);
-				res.json({ token });
+				return res.json({ token, user });
 			}
 		}
 		return res.status(403).json({ msg: "Incorrect handle or password" });

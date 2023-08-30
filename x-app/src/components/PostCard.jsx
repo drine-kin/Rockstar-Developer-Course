@@ -6,7 +6,15 @@ import {
 	Box,
 	Typography,
 	Avatar,
+	ButtonGroup,
+	IconButton,
+	Button,
 } from "@mui/material";
+
+import {
+	FavoriteBorder as LikeIcon,
+	ChatBubbleOutline as CommentIcon,
+} from "@mui/icons-material";
 
 import { formatRelative, parseISO } from "date-fns";
 
@@ -64,6 +72,21 @@ const PostCard = ({ post, single = false, primary }) => {
 					</Box>
 				</CardContent>
 			</CardActionArea>
+
+			<Box sx={{ display: "flex", justifyContent: "space-around" }}>
+				<ButtonGroup>
+					<IconButton>
+						<LikeIcon color="error" />
+					</IconButton>
+					<Button variant="text">{post.likes.length}</Button>
+				</ButtonGroup>
+				<ButtonGroup>
+					<IconButton>
+						<CommentIcon color="success" />
+					</IconButton>
+					<Button variant="text">{0}</Button>
+				</ButtonGroup>
+			</Box>
 		</Card>
 	);
 };

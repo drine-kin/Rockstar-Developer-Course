@@ -8,16 +8,17 @@ const url = "http://localhost:8888/posts";
 export default function Home() {
 	const [posts, setPosts] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState("");
 
 	useEffect(() => {
 		(async () => {
-			const res = await fetch(url);
-			if (res.status === 401) {
-				setError("Unauthorized");
-				setLoading(false);
-				return;
-			}
+			const token = localStorage.getItem("token");
+
+			const res = await fetch(url, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
 			const data = await res.json();
 			setPosts(data);
 			setLoading(false);
@@ -36,12 +37,10 @@ export default function Home() {
 					}}>
 					<CircularProgress disableShrink />
 				</Box>
-			) : posts.length > 0 ? (
+			) : (
 				posts.map((post) => {
 					return <PostCard key={post._id} post={post} />;
 				})
-			) : (
-				error && "You are not allowed to view this page"
 			)}
 		</>
 	);
