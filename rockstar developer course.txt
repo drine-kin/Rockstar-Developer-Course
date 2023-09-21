@@ -416,3 +416,54 @@ Server Component - react component with  (standalone mui, date-fms process indiv
 SSR + Server Component - 
 
 
+==============================27.8.2023====================================
+add comment and likes count, code refactor
+
+
+
+
+==============================2.9.2023====================================
+framer motion - use for animation
+add toggle like button, update to db
+
+to add follower and following page and link in profile, add post, add comment ------------ homework
+
+==============================3.9.2023====================================
+show comment count, add post, add comment, follower, following
+
+unit testing - jest, vitest
+
+
+
+==============================9.9.2023====================================
+Docker - Container (Linux OS)
+
+image,container 
+api build - using docker
+
+nginx - cache, security, load balancing, 
+
+
+
+==============================10.9.2023====================================
+image in express - multer
+
+web socket - real time (web socket server(express), web socket client (in react))
+
+ui build - npm run build
+
+added cover photo and profile change
+
+
+
+==============================16.9.2023====================================
+
+Web socket  - chat
+npm i express express-ws cors
+
+chat-server, chat-client
+
+==============================17.9.2023====================================
+added realtime noti in x-app
+
+expo learn stickersmash

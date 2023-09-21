@@ -1,3 +1,5 @@
+import { useRef, useState, useContext } from "react";
+
 import {
 	Box,
 	Alert,
@@ -7,18 +9,18 @@ import {
 	InputAdornment,
 } from "@mui/material";
 
-import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const url = "http://localhost:8888/users";
+import { UIContext } from "../ThemedApp";
+import { fetchRegister } from "../libs/fetcher";
 
 export default function Register() {
+	const { setSnackbarOpen, setSnackMessage } = useContext(UIContext);
+	const navigate = useNavigate();
+
 	const nameInput = useRef();
 	const handleInput = useRef();
 	const profileInput = useRef();
 	const passwordInput = useRef();
-
-	const navigate = useNavigate();
 
 	const [hasError, setHasError] = useState(false);
 
@@ -30,12 +32,12 @@ export default function Register() {
 
 			{hasError && (
 				<Alert severity="warning" sx={{ mb: 3 }}>
-					Handle or password incorrect
+					Something went wrong, please try again
 				</Alert>
 			)}
 
 			<form
-				onSubmit={(e) => {
+				onSubmit={e => {
 					e.preventDefault();
 
 					setHasError(false);
@@ -46,23 +48,17 @@ export default function Register() {
 					const password = passwordInput.current.value;
 
 					(async () => {
-						const res = await fetch(url, {
-							method: "post",
-							body: JSON.stringify({
-								name,
-								handle,
-								profile,
-								password,
-							}),
-							headers: {
-								"Content-Type": "application/json",
-							},
-						});
-						if (res.ok) {
-							navigate("/login");
-						} else {
-							setHasError(true);
-						}
+						const result = await fetchRegister(
+							name,
+							handle,
+							profile,
+							password,
+						);
+						if (!result) setHasError(true);
+
+						setSnackbarOpen(true);
+						setSnackMessage("Account created, please login");
+						navigate("/login");
 					})();
 				}}>
 				<OutlinedInput
@@ -78,12 +74,13 @@ export default function Register() {
 					inputRef={handleInput}
 					placeholder="Handle"
 					fullWidth={true}
-					startAdornment={<InputAdornment position="start">@</InputAdornment>}
+					startAdornment={
+						<InputAdornment position="start">@</InputAdornment>
+					}
 					sx={{ mb: 2 }}
 				/>
 
 				<OutlinedInput
-					required
 					inputRef={profileInput}
 					placeholder="Profile"
 					fullWidth={true}
@@ -100,7 +97,11 @@ export default function Register() {
 					sx={{ mb: 3 }}
 				/>
 
-				<Button type="submit" variant="contained" color="info" fullWidth={true}>
+				<Button
+					type="submit"
+					variant="contained"
+					color="info"
+					fullWidth={true}>
 					Register
 				</Button>
 			</form>

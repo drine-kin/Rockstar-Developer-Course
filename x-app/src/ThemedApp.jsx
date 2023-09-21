@@ -1,19 +1,82 @@
-import { createContext, useMemo, useState } from "react";
+import { createContext, useMemo, useState, useEffect } from "react";
+
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { pink, grey } from "@mui/material/colors";
+
 import App from "./App";
+import { fetchNotis, fetchVerify, getToken } from "./libs/fetcher";
 
 export const ThemeContext = createContext();
 export const AuthContext = createContext();
+export const UIContext = createContext();
+export const NotiContext = createContext();
+
+const wsc = new WebSocket(import.meta.env.VITE_WS_URL);
+wsc.onopen = () => {
+	wsc.send(getToken());
+};
 
 export default function ThemedApp() {
 	const [mode, setMode] = useState("dark");
+	const [snackbarOpen, setSnackbarOpen] = useState(false);
+	const [snackMessage, setSnackMessage] = useState("Action completed");
+	const [notiCount, setNotiCount] = useState(0);
+
 	const [auth, setAuth] = useState(false);
 	const [authUser, setAuthUser] = useState({});
 
+	wsc.onmessage = e => {
+		setNotiCount(e.data);
+	};
+
+	useEffect(() => {
+		(async () => {
+			const notis = await fetchNotis();
+			setNotiCount(notis.filter(noti => !noti.read).length);
+		})();
+
+		(async () => {
+			const user = await fetchVerify();
+
+			user.following = user.following || [];
+			user.followers = user.followers || [];
+
+			if (user) {
+				setAuth(true);
+				setAuthUser(user);
+			}
+		})();
+	}, []);
+
 	const theme = useMemo(() => {
 		return createTheme({
-			palette: { mode },
+			palette: {
+				mode,
+				...(mode === "light"
+					? {
+							banner: {
+								background: grey[300],
+							},
+							appbar: {
+								background: pink[500],
+							},
+							text: {
+								fade: grey[500],
+							},
+					  }
+					: {
+							banner: {
+								background: grey[900],
+							},
+							appbar: {
+								background: "#111",
+							},
+							text: {
+								fade: grey[700],
+							},
+					  }),
+			},
 		});
 	}, [mode]);
 
@@ -21,8 +84,19 @@ export default function ThemedApp() {
 		<AuthContext.Provider value={{ auth, setAuth, authUser, setAuthUser }}>
 			<ThemeContext.Provider value={{ mode, setMode }}>
 				<ThemeProvider theme={theme}>
-					<CssBaseline />
-					<App />
+					<UIContext.Provider
+						value={{
+							snackbarOpen,
+							setSnackbarOpen,
+							snackMessage,
+							setSnackMessage,
+						}}>
+						<NotiContext.Provider
+							value={{ notiCount, setNotiCount }}>
+							<CssBaseline />
+							<App />
+						</NotiContext.Provider>
+					</UIContext.Provider>
 				</ThemeProvider>
 			</ThemeContext.Provider>
 		</AuthContext.Provider>

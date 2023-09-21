@@ -1,45 +1,64 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import PostCard from "../components/PostCard";
-import { Box, CircularProgress } from "@mui/material";
+import { useState, useEffect, useContext } from "react";
 
-const url = "http://localhost:8888/posts";
+import { useNavigate } from "react-router-dom";
+
+import PostCard from "../components/PostCard";
+import Loading from "../components/Loading";
+import { fetchPosts, fetchPostNoti } from "../libs/fetcher";
+
+import { AuthContext } from "../ThemedApp";
 
 export default function Home() {
+	const navigate = useNavigate();
+
+	const { authUser } = useContext(AuthContext);
+
 	const [posts, setPosts] = useState([]);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		(async () => {
-			const token = localStorage.getItem("token");
+			const posts = await fetchPosts();
+			if (!posts) return navigate("/login");
 
-			const res = await fetch(url, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
-
-			const data = await res.json();
-			setPosts(data);
+			setPosts(posts);
 			setLoading(false);
 		})();
 	}, []);
 
+	const toggleLike = _id => {
+		setPosts(
+			posts.map(post => {
+				if (post._id === _id) {
+					if (post.likes.includes(authUser._id)) {
+						post.likes = post.likes.filter(
+							like => like !== authUser._id,
+						);
+					} else {
+						post.likes.push(authUser._id);
+					}
+				}
+
+				return post;
+			}),
+		);
+
+		fetchPostNoti("like", _id);
+	};
+
 	return (
 		<>
 			{loading ? (
-				<Box
-					sx={{
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-						height: "80vh",
-					}}>
-					<CircularProgress disableShrink />
-				</Box>
+				<Loading />
 			) : (
-				posts.map((post) => {
-					return <PostCard key={post._id} post={post} />;
+				posts.map(post => {
+					return (
+						<PostCard
+							post={post}
+							key={post._id}
+							toggleLike={toggleLike}
+						/>
+					);
 				})
 			)}
 		</>

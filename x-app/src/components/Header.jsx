@@ -1,84 +1,100 @@
-import {
-	AppBar,
-	Box,
-	Toolbar,
-	Typography,
-	Badge,
-	IconButton,
-	Menu,
-	MenuItem,
-} from "@mui/material";
+import { useContext, useState } from "react";
+
+import { Box, AppBar, Toolbar, IconButton, Badge } from "@mui/material";
 
 import {
+	ArrowBack as ArrowBackIcon,
+	Notifications as NotificationsIcon,
+	PersonSearch as PersonSearchIcon,
 	Menu as MenuIcon,
-	MoreVert as MoreVertIcon,
 	LightMode as LightModeIcon,
 	DarkMode as DarkModeIcon,
 } from "@mui/icons-material";
 
-import { useContext, useState } from "react";
-import { AuthContext, ThemeContext } from "../ThemedApp";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { AuthContext, ThemeContext, NotiContext } from "../ThemedApp";
+import Search from "../pages/Search";
 
 export default function Header({ toggleDrawer }) {
-	const { mode, setMode } = useContext(ThemeContext);
-	const { auth, setAuth, setAuthUser } = useContext(AuthContext);
-	const [showMenu, setShowMenu] = useState(false);
-
+	const location = useLocation();
 	const navigate = useNavigate();
 
+	const [searchOpen, setSearchOpen] = useState(false);
+
+	const { auth } = useContext(AuthContext);
+	const { mode, setMode } = useContext(ThemeContext);
+	const { notiCount } = useContext(NotiContext);
+
+	const mainPages = ["/", "/login", "/register"];
+
 	return (
-		<Box sx={{ flexGrow: 1, mb: 3 }}>
-			<AppBar position="static">
-				<Toolbar>
-					<IconButton onClick={toggleDrawer}>
+		<AppBar
+			position="static"
+			elevation={2}
+			sx={{ mb: 4, bgcolor: "appbar.background" }}>
+			<Toolbar>
+				{mainPages.includes(location.pathname) ? (
+					<IconButton
+						size="large"
+						edge="start"
+						color="inherit"
+						sx={{ mr: 2 }}
+						onClick={toggleDrawer}>
 						<MenuIcon />
 					</IconButton>
+				) : (
+					<IconButton
+						size="large"
+						edge="start"
+						color="inherit"
+						onClick={() => {
+							navigate(-1);
+						}}>
+						<ArrowBackIcon />
+					</IconButton>
+				)}
 
-					<Box
-						sx={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center",
-							flexGrow: 1,
-						}}></Box>
+				<Box
+					sx={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+						flexGrow: 1,
+					}}></Box>
 
-					{mode === "dark" ? (
-						<IconButton onClick={() => setMode("light")}>
-							<LightModeIcon />
-						</IconButton>
-					) : (
-						<IconButton onClick={() => setMode("dark")}>
-							<DarkModeIcon />
-						</IconButton>
-					)}
+				<IconButton
+					sx={{ mr: 1 }}
+					onClick={() => {
+						setSearchOpen(true);
+					}}>
+					<PersonSearchIcon />
+				</IconButton>
 
-					{auth && (
-						<>
-							<IconButton onClick={(e) => setShowMenu(e.currentTarget)}>
-								<MoreVertIcon />
-							</IconButton>
+				{mode === "dark" ? (
+					<IconButton sx={{ mr: 1 }} onClick={() => setMode("light")}>
+						<LightModeIcon />
+					</IconButton>
+				) : (
+					<IconButton sx={{ mr: 1 }} onClick={() => setMode("dark")}>
+						<DarkModeIcon />
+					</IconButton>
+				)}
 
-							<Menu
-								anchorEl={showMenu}
-								open={Boolean(showMenu)}
-								onClose={() => setShowMenu(false)}>
-								<MenuItem
-									onClick={() => {
-										localStorage.clear();
-										setAuth(false);
-										setAuthUser(null);
-										setShowMenu(false);
-										navigate("/login");
-									}}
-									sx={{ width: 200 }}>
-									Logout
-								</MenuItem>
-							</Menu>
-						</>
-					)}
-				</Toolbar>
-			</AppBar>
-		</Box>
+				{auth && (
+					<IconButton
+						color="inherit"
+						onClick={() => {
+							navigate("/notis");
+						}}>
+						<Badge color="error" badgeContent={notiCount}>
+							<NotificationsIcon />
+						</Badge>
+					</IconButton>
+				)}
+			</Toolbar>
+
+			<Search open={searchOpen} setOpen={setSearchOpen} />
+		</AppBar>
 	);
 }

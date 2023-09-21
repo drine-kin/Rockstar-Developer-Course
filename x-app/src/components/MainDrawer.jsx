@@ -14,20 +14,21 @@ import {
 	Home as HomeIcon,
 	Login as LoginIcon,
 	PersonAddAlt as PersonAddAltIcon,
-	Person as UserIcon,
-	Logout as LogoutIcon,
+	Person2 as PersonIcon,
+	Logout as LogoutIcon
 } from "@mui/icons-material";
 
-import { useNavigate } from "react-router-dom";
+import { grey, pink } from "@mui/material/colors";
+
+import { useNavigate, Link } from "react-router-dom";
+
 import { useContext } from "react";
 import { AuthContext } from "../ThemedApp";
 
 export default function MainDrawer({ showDrawer, toggleDrawer }) {
 	const navigate = useNavigate();
 
-	const { auth, setAuth, authUser, setAuthUser } = useContext(AuthContext);
-
-	console.log(auth, "  ", authUser);
+	const { auth, authUser, setAuth, setAuthUser } = useContext(AuthContext);
 
 	return (
 		<div>
@@ -35,30 +36,36 @@ export default function MainDrawer({ showDrawer, toggleDrawer }) {
 				<Box sx={{ width: 300 }}>
 					<Box
 						sx={{
-							height: 180,
-							background: "#345",
+							p: 3,
+							mb: 2,
+							height: 200,
+							bgcolor: "banner.background",
 							display: "flex",
-							alignItems: "end",
+							alignItems: "flex-end",
 						}}>
-						<Avatar
-							sx={{
-								width: 98,
-								height: 98,
-								ml: 3,
-								mb: -5,
-								background: "#59f",
-							}}>
-							{auth ? authUser.handle.charAt(0).toUpperCase() : "U"}
-						</Avatar>
 						{auth && (
-							<>
-								<Typography variant="p" sx={{ ml: 3, mt: 3, color: "grey" }}>
-									{auth ? authUser.name : "U"}
-								</Typography>
-								<Typography variant="p" sx={{ ml: 1, color: "grey" }}>
-									@{auth && authUser.handle}
-								</Typography>
-							</>
+							<Box sx={{ display: "flex", mb: -8 }}>
+								<Avatar
+									alt="Profile"
+									sx={{
+										width: 98,
+										height: 98,
+										bgcolor: pink[500],
+									}}>
+									{authUser.name[0]}
+								</Avatar>
+
+								<Box sx={{ mt: 3, ml: 2 }}>
+									<Typography variant="h6">
+										<b>{authUser && authUser.name}</b>
+									</Typography>
+									<Typography
+										variant="body2"
+										sx={{ color: grey[400], fontSize: 16 }}>
+										@{authUser && authUser.handle}
+									</Typography>
+								</Box>
+							</Box>
 						)}
 					</Box>
 
@@ -80,22 +87,27 @@ export default function MainDrawer({ showDrawer, toggleDrawer }) {
 								<ListItem>
 									<ListItemButton
 										onClick={() => {
-											navigate(`/profile/${auth && authUser.handle}`);
+											navigate(
+												`/profile/${authUser.handle}`,
+											);
 											toggleDrawer();
 										}}>
 										<ListItemIcon>
-											<UserIcon />
+											<PersonIcon />
 										</ListItemIcon>
-										<ListItemText primary={auth && authUser.handle} />
+										<ListItemText primary="Profile" />
 									</ListItemButton>
 								</ListItem>
 								<ListItem>
 									<ListItemButton
 										onClick={() => {
-											//navigate("/");
+											localStorage.clear();
+
 											setAuth(false);
 											setAuthUser(null);
 											toggleDrawer();
+
+											navigate("/login");
 										}}>
 										<ListItemIcon>
 											<LogoutIcon />
@@ -105,6 +117,7 @@ export default function MainDrawer({ showDrawer, toggleDrawer }) {
 								</ListItem>
 							</>
 						)}
+
 						{!auth && (
 							<>
 								<ListItem>
