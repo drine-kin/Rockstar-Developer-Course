@@ -467,3 +467,39 @@ chat-server, chat-client
 added realtime noti in x-app
 
 expo learn stickersmash
+
+==============================23.9.2023====================================
+
+Next js
+
+npx create-next-app hello-next
+
+npx next or npm run dev - run command
+
+Next js - SSR + server component
+
+App router - default server component
+
+We can write both Server Component and Client Component in next, mostly server component
+We can wrap server component in client component and client component in server component.
+
+movie app with external api, next, shadcn
+
+==============================30.9.2023====================================
+
+Class component
+Error Boundary - Built in react, next, showing error
+Suspense - don't wait heavy loading time component, render some first
+
+TDD - test driven development, should use jest , now vite test
+
+jsdom, vitest, @testing-library/react, @testing-library/jest-dom
+
+CI/CD - Git, Nginx, Docker, Test, migrate, build - automation
+
+gist.github.com/eimg
+
+babel - transpiler, transform jsx to javascript to be understand by browser
+
+webpack - webpack cli, autocompile on save (using --watch)
+
